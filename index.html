@@ -1,0 +1,1165 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<!-- ========== SEKCJA 1: TYTUŁ I CELE ========== -->
+				<section>
+					<!-- Slajd 1.0: Tytuł -->
+					<section>
+						<h1 style="color: #42affa;">Wskaźniki w C++</h1>
+						<br>
+						<p style="font-size: 0.8em;">
+							<span style="color: #42affa;">⚡</span> Odkryj moc bezpośredniego dostępu do pamięci
+						</p>
+						<br>
+						<p>
+							<small style="color: #666;">Naciśnij <kbd>spację</kbd> lub <kbd>→</kbd> aby przejść dalej</small>
+						</p>
+					</section>
+
+					<!-- Slajd 1.1: Czym są wskaźniki -->
+					<section>
+						<h2 style="color: #42affa;">Czym są wskaźniki?</h2>
+						<br>
+						<p style="font-size: 1.1em;">Wskaźniki to specjalne <strong>zmienne</strong>, które przechowują <strong style="color: #42affa;">adresy w pamięci</strong> innych zmiennych.</p>
+						<br>
+						<div class="fragment">
+							<p style="color: #aaa;">Możemy sobie wyobrazić, że:</p>
+							<ul style="font-size: 0.9em;">
+								<li>Zwykła zmienna to <strong>pudełko z wartością</strong></li>
+								<li class="fragment">Wskaźnik to <strong>karteczka z adresem</strong> tego pudełka</li>
+							</ul>
+						</div>
+						<br>
+						<p class="fragment" style="font-size: 0.9em; color: #888;">
+							💡 Dzięki wskaźnikom możemy:
+						</p>
+						<ul class="fragment" style="font-size: 0.85em;">
+							<li>Bezpośrednio modyfikować dane w pamięci</li>
+							<li>Efektywnie zarządzać dużymi strukturami danych</li>
+							<li>Tworzyć zaawansowane algorytmy</li>
+						</ul>
+					</section>
+				</section>
+
+				<!-- ========== SEKCJA 2: ADRES I DEREFERENCJA ========== -->
+				<section>
+					<!-- Slajd 2.0: Wprowadzenie -->
+					<section>
+						<h2 style="color: #42affa;">Adres i dereferencja</h2>
+						<h3 style="color: #888;">Operatory <code>&</code> i <code>*</code></h3>
+						<br>
+						<p class="fragment" style="font-size: 0.9em;">
+							To dwa fundamentalne operatory, które musisz poznać,<br>
+							aby zrozumieć wskaźniki w C++
+						</p>
+					</section>
+
+					<!-- Slajd 2.1: Operator & -->
+					<section>
+						<h2 style="color: #42affa;">Operator <code>&</code> - adres zmiennej</h2>
+						<br>
+						<p style="font-size: 0.95em;">
+							Operator <code>&</code> (<strong>address-of</strong>) zwraca <strong style="color: #42affa;">adres w pamięci</strong>, pod którym znajduje się zmienna.
+						</p>
+						<br>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int x = 42;       // Tworzymy zmienną x o wartości 42
+int* p = &x;      // p przechowuje ADRES zmiennej x
+
+cout << &x;       // Wypisuje adres, np. 0x7ffd5e8b9a1c
+cout << p;        // Wypisuje ten sam adres
+						</code></pre>
+						<br>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 <strong>Zapamiętaj:</strong> Wskaźnik <code>p</code> "wskazuje" na zmienną <code>x</code>, bo przechowuje jej adres w pamięci komputera.
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 2.2: Deklaracja wskaźnika -->
+					<section>
+						<h2 style="color: #42affa;">Jak deklarować wskaźniki?</h2>
+						<br>
+						<p style="font-size: 0.9em;">Wskaźniki deklarujemy używając <code>*</code> w deklaracji typu:</p>
+						<br>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int* p;        // Wskaźnik na int
+double* d;     // Wskaźnik na double
+char* c;       // Wskaźnik na char
+						</code></pre>
+						<br>
+						<div class="fragment" style="font-size: 0.85em;">
+							<p style="color: #aaa;">⚠️ <strong>Uwaga:</strong> Niezainicjalizowany wskaźnik jest niebezpieczny!</p>
+							<pre><code data-trim data-noescape class="language-cpp">
+int* p;              // ❌ Wskazuje "gdzieś" - niebezpieczne!
+int* p = nullptr;    // ✅ Bezpieczna inicjalizacja
+						</code></pre>
+						</div>
+					</section>
+
+					<!-- Slajd 2.3: Operator * -->
+					<section>
+						<h2 style="color: #42affa;">Operator <code>*</code> - dereferencja</h2>
+						<br>
+						<p style="font-size: 0.95em;">
+							Operator <code>*</code> (<strong>dereference</strong>) umożliwia <strong style="color: #42affa;">dostęp do wartości</strong>, która znajduje się pod adresem przechowywanym we wskaźniku.
+						</p>
+						<br>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int x = 42;
+int* p = &x;      // p wskazuje na x
+
+cout << *p;       // Wypisuje 42 (wartość x)
+*p = 100;         // Zmienia wartość x na 100
+cout << x;        // Wypisuje 100 - x zostało zmienione!
+						</code></pre>
+						<br>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 <strong>Kluczowe:</strong> Dereferencja pozwala nie tylko <em>odczytać</em>, ale też <em>zmodyfikować</em> wartość!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 2.4: Różnica między & i * -->
+					<section>
+						<h2 style="color: #42affa;">Podsumowanie: <code>&</code> vs <code>*</code></h2>
+						<br>
+						<table style="width: 100%; font-size: 0.85em;">
+							<thead>
+								<tr style="background: rgba(66, 175, 250, 0.2);">
+									<th style="padding: 15px;">Operator</th>
+									<th style="padding: 15px;">Nazwa</th>
+									<th style="padding: 15px;">Działanie</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="fragment">
+									<td style="padding: 15px; text-align: center;"><code>&</code></td>
+									<td style="padding: 15px;">Address-of</td>
+									<td style="padding: 15px;">Pobiera <strong>adres</strong> zmiennej</td>
+								</tr>
+								<tr class="fragment">
+									<td style="padding: 15px; text-align: center;"><code>*</code></td>
+									<td style="padding: 15px;">Dereference</td>
+									<td style="padding: 15px;">Dostęp do <strong>wartości</strong> pod adresem</td>
+								</tr>
+							</tbody>
+						</table>
+						<br>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int x = 42;
+int* p = &x;    // & pobiera adres x
+int y = *p;     // * pobiera wartość spod adresu w p
+						</code></pre>
+					</section>
+
+					<!-- Slajd 2.5: Schemat działania -->
+					<section>
+						<h2 style="color: #42affa;">Jak to wygląda w pamięci?</h2>
+						<br>
+						<pre><code data-trim data-noescape class="language-cpp">
+int x = 42;        // Zmienna x przechowuje wartość 42
+int* p = &x;       // Wskaźnik p przechowuje adres zmiennej x
+						</code></pre>
+						<br>
+						<div class="fragment">
+							<p style="color: #aaa; font-size: 0.9em;"><strong>Reprezentacja w pamięci RAM:</strong></p>
+							<table style="margin: auto; font-family: monospace; font-size: 0.85em; border-collapse: separate; border-spacing: 5px;">
+								<tr>
+									<td style="background: rgba(66, 175, 250, 0.2); border: 2px solid #42affa; padding: 15px; border-radius: 5px;">
+										<strong>0x1000</strong>
+									</td>
+									<td style="background: rgba(66, 175, 250, 0.3); border: 2px solid #42affa; padding: 15px; border-radius: 5px;">
+										<strong style="color: #42affa;">42</strong>
+									</td>
+									<td style="padding: 15px; color: #aaa;">
+										← zmienna <code style="color: #42affa;">x</code>
+									</td>
+								</tr>
+								<tr class="fragment">
+									<td style="background: rgba(250, 175, 66, 0.2); border: 2px solid #faaf42; padding: 15px; border-radius: 5px;">
+										<strong>0x2000</strong>
+									</td>
+									<td style="background: rgba(250, 175, 66, 0.3); border: 2px solid #faaf42; padding: 15px; border-radius: 5px;">
+										<strong style="color: #faaf42;">0x1000</strong>
+									</td>
+									<td style="padding: 15px; color: #aaa;">
+										← wskaźnik <code style="color: #faaf42;">p</code> (wskazuje na x)
+									</td>
+								</tr>
+							</table>
+						</div>
+						<br>
+						<p class="fragment" style="font-size: 0.8em; color: #666;">
+							💡 Wskaźnik <code>p</code> znajduje się pod adresem 0x2000, a jego wartością jest adres 0x1000 (gdzie jest <code>x</code>)
+						</p>
+					</section>
+
+					<!-- Slajd 2.6: Przykład krok po kroku -->
+					<section>
+						<h2 style="color: #42affa;">Przykład krok po kroku</h2>
+						<br>
+						<pre><code data-trim data-noescape class="language-cpp">
+int x = 10;           // Krok 1: Tworzymy x = 10
+						</code></pre>
+						<p class="fragment" style="font-size: 0.85em; color: #aaa;">x ma wartość 10</p>
+						<br>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int* p = &x;          // Krok 2: p wskazuje na x
+						</code></pre>
+						<p class="fragment" style="font-size: 0.85em; color: #aaa;">p przechowuje adres x</p>
+						<br>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+cout << *p;           // Krok 3: Wypisujemy wartość spod p
+						</code></pre>
+						<p class="fragment" style="font-size: 0.85em; color: #42affa;">Wynik: 10</p>
+						<br>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+*p = 20;              // Krok 4: Zmieniamy wartość przez p
+cout << x;            // Krok 5: Sprawdzamy x
+						</code></pre>
+						<p class="fragment" style="font-size: 0.85em; color: #42affa;">Wynik: 20 (x zostało zmienione!)</p>
+					</section>
+
+					<!-- Slajd 2.7: Przejście do ćwiczenia -->
+					<section data-background-gradient="linear-gradient(to bottom, #1a1a2e, #16213e)">
+						<h2 style="color: #42affa;">Czas na praktykę! 🚀</h2>
+						<h3 style="color: #888;">Ćwiczenie 1: Podstawy wskaźników (ex01)</h3>
+						<br>
+						<div style="background: rgba(66, 175, 250, 0.1); padding: 25px; border-radius: 10px; border: 2px solid #42affa;">
+							<p style="font-size: 0.9em;"><strong>Twoje zadanie:</strong></p>
+							<ul style="font-size: 0.85em; text-align: left; line-height: 1.8;">
+								<li>✅ Zadeklaruj zmienną <code>int x</code> z dowolną wartością</li>
+								<li>✅ Utwórz wskaźnik <code>int* p = &x</code></li>
+								<li>✅ Wypisz adres zmiennej (<code>&x</code> lub <code>p</code>)</li>
+								<li>✅ Wypisz wartość przez wskaźnik (<code>*p</code>)</li>
+								<li>✅ Zmień wartość <code>x</code> przez dereferencję (<code>*p = nowa_wartość</code>)</li>
+								<li>✅ Zweryfikuj, że <code>x</code> faktycznie się zmieniło</li>
+							</ul>
+						</div>
+						<br>
+						<p class="fragment" style="font-size: 0.85em;">
+							<span style="color: #42affa;">👨‍💻</span> <strong>Przejdź do GitHub Codespaces i otwórz plik ex01.cpp</strong>
+						</p>
+						<p class="fragment" style="font-size: 0.75em; color: #666;">
+							Powodzenia! Jeśli masz pytania, śmiało pytaj.
+						</p>
+					</section>
+				</section>
+
+				<!-- ========== SEKCJA 3: TABLICE I WSKAŹNIKI ========== -->
+				<section>
+					<!-- Slajd 3.0: Wprowadzenie -->
+					<section>
+						<h2 style="color: #42affa;">Tablice i wskaźniki</h2>
+						<h3 style="color: #888;">Związek tablic ze wskaźnikami</h3>
+						<br>
+						<p class="fragment" style="font-size: 0.9em;">
+							W C++ nazwa tablicy jest <strong style="color: #42affa;">wskaźnikiem</strong><br>
+							na jej pierwszy element!
+						</p>
+					</section>
+
+					<!-- Slajd 3.1: Tablica jako wskaźnik -->
+					<section>
+						<h2 style="color: #42affa;">Nazwa tablicy = wskaźnik</h2>
+						<br>
+						<p style="font-size: 0.95em;">
+							Kiedy deklarujemy tablicę, jej nazwa automatycznie staje się wskaźnikiem na pierwszy element.
+						</p>
+						<br>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int A[5] = {10, 20, 30, 40, 50};
+
+cout << A;        // Wypisuje adres pierwszego elementu
+cout << &A[0];    // To samo! Adres pierwszego elementu
+						</code></pre>
+						<br>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 <strong>Ważne:</strong> <code>A</code> i <code>&A[0]</code> to dokładnie to samo!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 3.2: Dostęp do elementów -->
+					<section>
+						<h2 style="color: #42affa;">Dwa sposoby dostępu do elementów</h2>
+						<br>
+						<p style="font-size: 0.9em;">Możemy odwoływać się do elementów tablicy na dwa równoważne sposoby:</p>
+						<br>
+						<table style="width: 100%; font-size: 0.85em;">
+							<thead>
+								<tr style="background: rgba(66, 175, 250, 0.2);">
+									<th style="padding: 15px;">Notacja tablicowa</th>
+									<th style="padding: 15px;">Notacja wskaźnikowa</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="fragment">
+									<td style="padding: 15px; text-align: center;"><code>A[0]</code></td>
+									<td style="padding: 15px; text-align: center;"><code>*A</code></td>
+								</tr>
+								<tr class="fragment">
+									<td style="padding: 15px; text-align: center;"><code>A[1]</code></td>
+									<td style="padding: 15px; text-align: center;"><code>*(A + 1)</code></td>
+								</tr>
+								<tr class="fragment">
+									<td style="padding: 15px; text-align: center;"><code>A[i]</code></td>
+									<td style="padding: 15px; text-align: center;"><code>*(A + i)</code></td>
+								</tr>
+							</tbody>
+						</table>
+						<br>
+						<p class="fragment" style="font-size: 0.8em; color: #666;">
+							💡 Obie notacje robią dokładnie to samo!
+						</p>
+					</section>
+
+					<!-- Slajd 3.3: Przykład równoważności -->
+					<section>
+						<h2 style="color: #42affa;">Przykład równoważności</h2>
+						<br>
+						<pre><code data-trim data-noescape class="language-cpp">
+int A[5] = {10, 20, 30, 40, 50};
+
+// Notacja tablicowa
+cout << A[0];     // Wypisuje: 10
+cout << A[2];     // Wypisuje: 30
+						</code></pre>
+						<br>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+// Notacja wskaźnikowa - dokładnie to samo!
+cout << *A;       // Wypisuje: 10
+cout << *(A + 2); // Wypisuje: 30
+						</code></pre>
+						<br>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 <code>A[i]</code> to tylko wygodniejszy zapis dla <code>*(A + i)</code>
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 3.4: Jak to działa w pamięci -->
+					<section>
+						<h2 style="color: #42affa;">Jak to wygląda w pamięci?</h2>
+						<br>
+						<pre><code data-trim data-noescape class="language-cpp">
+int A[5] = {10, 20, 30, 40, 50};
+						</code></pre>
+						<br>
+						<div class="fragment">
+							<p style="color: #aaa; font-size: 0.9em;"><strong>Reprezentacja w pamięci RAM:</strong></p>
+							<table style="margin: auto; font-family: monospace; font-size: 0.75em; border-collapse: separate; border-spacing: 3px;">
+								<tr>
+									<td style="background: rgba(66, 175, 250, 0.2); border: 2px solid #42affa; padding: 10px; border-radius: 5px;">
+										<strong>0x1000</strong>
+									</td>
+									<td style="background: rgba(66, 175, 250, 0.3); border: 2px solid #42affa; padding: 10px; border-radius: 5px;">
+										<strong style="color: #42affa;">10</strong>
+									</td>
+									<td style="padding: 10px; color: #aaa; font-size: 0.9em;">
+										← A[0] lub *A
+									</td>
+								</tr>
+								<tr class="fragment">
+									<td style="background: rgba(66, 175, 250, 0.2); border: 2px solid #42affa; padding: 10px; border-radius: 5px;">
+										<strong>0x1004</strong>
+									</td>
+									<td style="background: rgba(66, 175, 250, 0.3); border: 2px solid #42affa; padding: 10px; border-radius: 5px;">
+										<strong style="color: #42affa;">20</strong>
+									</td>
+									<td style="padding: 10px; color: #aaa; font-size: 0.9em;">
+										← A[1] lub *(A+1)
+									</td>
+								</tr>
+								<tr class="fragment">
+									<td style="background: rgba(66, 175, 250, 0.2); border: 2px solid #42affa; padding: 10px; border-radius: 5px;">
+										<strong>0x1008</strong>
+									</td>
+									<td style="background: rgba(66, 175, 250, 0.3); border: 2px solid #42affa; padding: 10px; border-radius: 5px;">
+										<strong style="color: #42affa;">30</strong>
+									</td>
+									<td style="padding: 10px; color: #aaa; font-size: 0.9em;">
+										← A[2] lub *(A+2)
+									</td>
+								</tr>
+								<tr class="fragment">
+									<td colspan="3" style="padding: 10px; color: #666; text-align: center;">
+										...i tak dalej
+									</td>
+								</tr>
+							</table>
+						</div>
+						<br>
+						<p class="fragment" style="font-size: 0.75em; color: #666;">
+							💡 Każdy int zajmuje 4 bajty, więc adresy różnią się o 4
+						</p>
+					</section>
+
+					<!-- Slajd 3.5: Iteracja przez tablicę -->
+					<section>
+						<h2 style="color: #42affa;">Iteracja przez tablicę wskaźnikiem</h2>
+						<br>
+						<p style="font-size: 0.9em;">Możemy iterować używając wskaźnika zamiast indeksów:</p>
+						<br>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+							<div>
+								<p style="color: #aaa; font-size: 0.85em;">Tradycyjna pętla:</p>
+								<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+for (int i = 0; i < 5; i++) {
+    cout << A[i] << " ";
+}
+								</code></pre>
+							</div>
+							<div>
+								<p style="color: #aaa; font-size: 0.85em;">Z użyciem wskaźnika:</p>
+								<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+for (int* p = A; p < A+5; p++) {
+    cout << *p << " ";
+}
+								</code></pre>
+							</div>
+						</div>
+						<br>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa; margin-top: 20px;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 <strong>Wynik:</strong> Obie pętle wypiszą: <code>10 20 30 40 50</code>
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 3.6: Arytmetyka wskaźników -->
+					<section>
+						<h2 style="color: #42affa;">Arytmetyka wskaźników</h2>
+						<br>
+						<p style="font-size: 0.9em;">Dodawanie liczby do wskaźnika przesuwa go o N elementów:</p>
+						<br>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int A[5] = {10, 20, 30, 40, 50};
+int* p = A;        // p wskazuje na A[0]
+
+p++;               // Teraz p wskazuje na A[1]
+cout << *p;        // Wypisuje: 20
+
+p = p + 2;         // Teraz p wskazuje na A[3]
+cout << *p;        // Wypisuje: 40
+						</code></pre>
+						<br>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 <code>p + 1</code> nie oznacza +1 bajt, ale +1 element (czyli +4 bajty dla int!)
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 3.7: Przejście do ćwiczenia -->
+					<section data-background-gradient="linear-gradient(to bottom, #1a1a2e, #16213e)">
+						<h2 style="color: #42affa;">Czas na praktykę! 🚀</h2>
+						<h3 style="color: #888;">Ćwiczenie 2: Suma tablicy wskaźnikiem (ex02)</h3>
+						<br>
+						<div style="background: rgba(66, 175, 250, 0.1); padding: 25px; border-radius: 10px; border: 2px solid #42affa;">
+							<p style="font-size: 0.9em;"><strong>Twoje zadanie:</strong></p>
+							<ul style="font-size: 0.85em; text-align: left; line-height: 1.8;">
+								<li>✅ Napisz funkcję <code>int sum_array(int* a, size_t n)</code></li>
+								<li>✅ Użyj <strong>wyłącznie arytmetyki wskaźników</strong> (bez <code>a[i]</code>!)</li>
+								<li>✅ Iteruj przez tablicę używając wskaźnika</li>
+								<li>✅ Oblicz sumę wszystkich elementów</li>
+								<li>✅ Przetestuj na kilku przykładowych tablicach</li>
+							</ul>
+						</div>
+						<br>
+						<p class="fragment" style="font-size: 0.85em;">
+							<span style="color: #42affa;">👨‍💻</span> <strong>Przejdź do GitHub Codespaces i otwórz plik ex02.cpp</strong>
+						</p>
+						<p class="fragment" style="font-size: 0.75em; color: #666;">
+							Wskazówka: Używaj <code>*(a + i)</code> lub <code>*p</code> zamiast <code>a[i]</code>
+						</p>
+					</section>
+				</section>
+
+				<!-- ========== SEKCJA 4: WSKAŹNIKI W FUNKCJACH ========== -->
+				<section>
+					<!-- Slajd 4.0: Wprowadzenie -->
+					<section>
+						<h2 style="color: #42affa;">Wskaźniki w funkcjach</h2>
+						<h3 style="color: #888;">Modyfikacja danych przez wskaźniki</h3>
+						<p class="fragment" style="font-size: 0.9em;">
+							Przekazywanie wskaźników do funkcji pozwala na <strong style="color: #42affa;">modyfikację oryginalnych danych</strong>,<br>
+							a nie tylko ich kopii
+						</p>
+					</section>
+
+					<!-- Slajd 4.1: Przekazywanie przez wartość vs wskaźnik -->
+					<section>
+						<h2 style="color: #42affa;">Przekazywanie przez wartość</h2>
+						<p style="font-size: 0.9em;">Domyślnie funkcje w C++ otrzymują <strong>kopię</strong> argumentów:</p>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+void increment(int x) {
+    x++;  // Zmienia KOPIĘ, nie oryginał
+}
+
+int main() {
+    int a = 10;
+    increment(a);
+    cout << a;  // Wypisuje: 10 (bez zmiany!)
+}
+						</code></pre>
+						<div class="fragment" style="background: rgba(250, 66, 66, 0.1); padding: 20px; border-left: 4px solid #fa4242;">
+							<p style="font-size: 0.85em; margin: 0;">
+								❌ <strong>Problem:</strong> Zmiany wewnątrz funkcji <strong>nie wpływają</strong> na oryginalne dane
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 4.2: Przekazywanie przez wskaźnik -->
+					<section>
+						<h2 style="color: #42affa;">Przekazywanie przez wskaźnik</h2>
+						<p style="font-size: 0.9em;">Przekazując wskaźnik, funkcja może modyfikować oryginalne dane:</p>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+void increment(int* x) {
+    (*x)++;  // Zmienia wartość POD adresem
+}
+
+int main() {
+    int a = 10;
+    increment(&a);  // Przekazujemy ADRES
+    cout << a;      // Wypisuje: 11 (zmienione!)
+}
+						</code></pre>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa;">
+							<p style="font-size: 0.85em; margin: 0;">
+								✅ <strong>Sukces:</strong> Funkcja modyfikuje oryginalne dane dzięki wskaźnikowi
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 4.3: Wizualizacja -->
+					<section>
+						<h2 style="color: #42affa;">Jak to działa?</h2>
+						<pre><code data-trim data-noescape class="language-cpp">
+void increment(int* x) { (*x)++; }
+
+int a = 10;
+increment(&a);  // Przekazujemy adres a
+						</code></pre>
+						<div class="fragment">
+							<p style="color: #aaa; font-size: 0.9em;"><strong>W pamięci:</strong></p>
+							<table style="margin: auto; font-family: monospace; font-size: 0.85em; border-collapse: separate; border-spacing: 5px;">
+								<tr>
+									<td style="background: rgba(66, 175, 250, 0.2); border: 2px solid #42affa; padding: 15px; border-radius: 5px;">
+										<strong>0x1000</strong>
+									</td>
+									<td style="background: rgba(66, 175, 250, 0.3); border: 2px solid #42affa; padding: 15px; border-radius: 5px;">
+										<strong style="color: #42affa;">10 → 11</strong>
+									</td>
+									<td style="padding: 15px; color: #aaa;">
+										← zmienna <code style="color: #42affa;">a</code>
+									</td>
+								</tr>
+								<tr class="fragment">
+									<td style="background: rgba(250, 175, 66, 0.2); border: 2px solid #faaf42; padding: 15px; border-radius: 5px;">
+										<strong>0x2000</strong>
+									</td>
+									<td style="background: rgba(250, 175, 66, 0.3); border: 2px solid #faaf42; padding: 15px; border-radius: 5px;">
+										<strong style="color: #faaf42;">0x1000</strong>
+									</td>
+									<td style="padding: 15px; color: #aaa;">
+										← parametr <code style="color: #faaf42;">x</code> w funkcji
+									</td>
+								</tr>
+							</table>
+						</div>
+						<p class="fragment" style="font-size: 0.8em; color: #666;">
+							💡 Funkcja ma adres <code>a</code>, więc może zmienić jego wartość!
+						</p>
+					</section>
+
+					<!-- Slajd 4.4: Przykład swap -->
+					<section>
+						<h2 style="color: #42affa;">Klasyczny przykład: swap</h2>
+						<p style="font-size: 0.9em;">Zamiana wartości dwóch zmiennych wymaga wskaźników:</p>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+void swap_int(int* a, int* b) {
+    int temp = *a;  // Zapisz wartość z a
+    *a = *b;        // Do a wpisz wartość z b
+    *b = temp;      // Do b wpisz zapisaną wartość
+}
+
+int main() {
+    int x = 5, y = 10;
+    swap_int(&x, &y);  // Przekazujemy adresy
+    cout << x << " " << y;  // Wypisuje: 10 5
+}
+						</code></pre>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 Bez wskaźników swap nie zadziała - zmieniałby tylko kopie!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 4.5: Krok po kroku swap -->
+					<section>
+						<h2 style="color: #42affa;">Swap krok po kroku</h2>
+						<pre><code data-trim data-noescape class="language-cpp">
+int x = 5, y = 10;
+swap_int(&x, &y);
+						</code></pre>
+						<div style="font-size: 0.85em;">
+							<p class="fragment"><strong>Krok 1:</strong> <code>int temp = *a;</code> → temp = 5</p>
+							<p class="fragment"><strong>Krok 2:</strong> <code>*a = *b;</code> → x = 10</p>
+							<p class="fragment"><strong>Krok 3:</strong> <code>*b = temp;</code> → y = 5</p>
+							<p class="fragment" style="color: #42affa; margin-top: 20px;">
+								<strong>Wynik:</strong> x = 10, y = 5 ✅
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 4.6: Kiedy używać wskaźników? -->
+					<section>
+						<h2 style="color: #42affa;">Kiedy używać wskaźników w funkcjach?</h2>
+						<ul style="font-size: 0.9em; line-height: 1.8;">
+							<li class="fragment">
+								✅ Gdy funkcja ma <strong>zmodyfikować</strong> przekazane dane
+							</li>
+							<li class="fragment">
+								✅ Gdy przekazujemy <strong>duże struktury</strong> (unikamy kopiowania)
+							</li>
+							<li class="fragment">
+								✅ Gdy funkcja ma zwrócić <strong>wiele wartości</strong>
+							</li>
+							<li class="fragment">
+								✅ Przy pracy z <strong>tablicami</strong>
+							</li>
+						</ul>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa; margin-top: 30px;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 <strong>Pamiętaj:</strong> W nowoczesnym C++ często używamy referencji (<code>&</code>), ale wskaźniki są fundamentem!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 4.7: Przejście do ćwiczenia -->
+					<section data-background-gradient="linear-gradient(to bottom, #1a1a2e, #16213e)">
+						<h2 style="color: #42affa;">Czas na praktykę! 🚀</h2>
+						<h3 style="color: #888;">Ćwiczenie 3: Funkcje modyfikujące przez wskaźniki (ex03)</h3>
+						<div style="background: rgba(66, 175, 250, 0.1); padding: 25px; border-radius: 10px; border: 2px solid #42affa;">
+							<p style="font-size: 0.9em;"><strong>Twoje zadanie:</strong></p>
+							<ul style="font-size: 0.85em; text-align: left; line-height: 1.8;">
+								<li>✅ Napisz funkcję <code>void min_max(int* arr, size_t n, int* min, int* max)</code></li>
+								<li>✅ Funkcja ma znaleźć wartość minimalną i maksymalną w tablicy</li>
+								<li>✅ Wyniki zapisz przez wskaźniki <code>min</code> i <code>max</code></li>
+								<li>✅ Przetestuj na kilku przykładowych tablicach</li>
+								<li>✅ Wypisz znalezione wartości w main()</li>
+							</ul>
+						</div>
+						<p class="fragment" style="font-size: 0.85em;">
+							<span style="color: #42affa;">👨‍💻</span> <strong>Przejdź do GitHub Codespaces i otwórz plik ex03.cpp</strong>
+						</p>
+						<p class="fragment" style="font-size: 0.75em; color: #666;">
+							Wskazówka: Ustaw początkowe wartości <code>*min = arr[0]</code> i <code>*max = arr[0]</code>, potem iteruj przez resztę tablicy
+						</p>
+					</section>
+				</section>
+
+				<!-- ========== SEKCJA 5: ARYTMETYKA WSKAŹNIKÓW I PUŁAPKI ========== -->
+				<section>
+					<!-- Slajd 5.0: Wprowadzenie -->
+					<section>
+						<h2 style="color: #42affa;">Arytmetyka wskaźników i pułapki</h2>
+						<h3 style="color: #888;">Jak działają operacje na wskaźnikach</h3>
+						<p class="fragment" style="font-size: 0.9em;">
+							Wskaźniki to nie zwykłe liczby - <strong style="color: #42affa;">arytmetyka</strong> działa inaczej!
+						</p>
+					</section>
+
+					<!-- Slajd 5.1: Operacje arytmetyczne -->
+					<section>
+						<h2 style="color: #42affa;">Operacje arytmetyczne na wskaźnikach</h2>
+						<p style="font-size: 0.9em;">Możliwe operacje:</p>
+						<table style="width: 100%; font-size: 0.85em; margin-top: 20px;">
+							<thead>
+								<tr style="background: rgba(66, 175, 250, 0.2);">
+									<th style="padding: 15px;">Operacja</th>
+									<th style="padding: 15px;">Przykład</th>
+									<th style="padding: 15px;">Znaczenie</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="fragment">
+									<td style="padding: 15px;">Dodawanie liczby</td>
+									<td style="padding: 15px;"><code>p + 3</code></td>
+									<td style="padding: 15px;">Przesuwa o 3 elementy</td>
+								</tr>
+								<tr class="fragment">
+									<td style="padding: 15px;">Odejmowanie liczby</td>
+									<td style="padding: 15px;"><code>p - 2</code></td>
+									<td style="padding: 15px;">Cofa o 2 elementy</td>
+								</tr>
+								<tr class="fragment">
+									<td style="padding: 15px;">Inkrementacja</td>
+									<td style="padding: 15px;"><code>p++</code></td>
+									<td style="padding: 15px;">Kolejny element</td>
+								</tr>
+								<tr class="fragment">
+									<td style="padding: 15px;">Dekrementacja</td>
+									<td style="padding: 15px;"><code>p--</code></td>
+									<td style="padding: 15px;">Poprzedni element</td>
+								</tr>
+								<tr class="fragment">
+									<td style="padding: 15px;">Różnica wskaźników</td>
+									<td style="padding: 15px;"><code>p2 - p1</code></td>
+									<td style="padding: 15px;">Liczba elementów między nimi</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+
+					<!-- Slajd 5.2: Rozmiar typu ma znaczenie -->
+					<section>
+						<h2 style="color: #42affa;">Rozmiar typu ma znaczenie!</h2>
+						<p style="font-size: 0.9em;">Wskaźnik "wie" jaki typ wskazuje i przesuwa się odpowiednio:</p>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int* p_int = ...;
+p_int++;           // Przesuwa się o sizeof(int) = 4 bajty
+
+double* p_double = ...;
+p_double++;        // Przesuwa się o sizeof(double) = 8 bajtów
+
+char* p_char = ...;
+p_char++;          // Przesuwa się o sizeof(char) = 1 bajt
+						</code></pre>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 <strong>Ważne:</strong> Kompilator automatycznie mnoży przesunięcie przez rozmiar typu!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 5.3: Porównywanie wskaźników -->
+					<section>
+						<h2 style="color: #42affa;">Porównywanie wskaźników</h2>
+						<p style="font-size: 0.9em;">Możemy sprawdzać relacje między wskaźnikami:</p>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int A[5] = {10, 20, 30, 40, 50};
+int* p1 = &A[1];   // Wskazuje na A[1]
+int* p2 = &A[3];   // Wskazuje na A[3]
+
+if (p1 < p2)       // true - p1 jest "wcześniej" w pamięci
+if (p2 > p1)       // true - p2 jest "później"
+if (p1 == &A[1])   // true - wskazują na to samo
+
+int diff = p2 - p1; // diff = 2 (dwa elementy różnicy)
+						</code></pre>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 Przydatne w pętlach: <code>for (int* p = A; p < A+5; p++)</code>
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 5.4: Pułapka 1 - Niezainicjalizowane wskaźniki -->
+					<section>
+						<h2 style="color: #fa4242;">⚠️ Pułapka #1: Niezainicjalizowany wskaźnik</h2>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int* p;            // ❌ Wskazuje "gdzieś losowo"
+*p = 42;           // ❌ BŁĄD! Modyfikujemy losową pamięć!
+						</code></pre>
+						<div class="fragment" style="background: rgba(250, 66, 66, 0.1); padding: 20px; border-left: 4px solid #fa4242; margin-top: 20px;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💥 <strong>Skutek:</strong> Crash programu lub nieprzewidywalne zachowanie!
+							</p>
+						</div>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+// ✅ Poprawnie:
+int* p = nullptr;  // Bezpieczna inicjalizacja
+int x = 10;
+p = &x;            // Teraz p wskazuje na prawidłową pamięć
+*p = 42;           // ✅ OK!
+						</code></pre>
+					</section>
+
+					<!-- Slajd 5.5: Pułapka 2 - Wyjście poza tablicę -->
+					<section>
+						<h2 style="color: #fa4242;">⚠️ Pułapka #2: Wyjście poza tablicę</h2>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int A[5] = {10, 20, 30, 40, 50};
+int* p = A;
+
+p = p + 10;        // ❌ Wskaźnik poza tablicą!
+cout << *p;        // ❌ Odczyt nieznanych danych
+*p = 100;          // ❌ Modyfikacja cudzej pamięci!
+						</code></pre>
+						<div class="fragment" style="background: rgba(250, 66, 66, 0.1); padding: 20px; border-left: 4px solid #fa4242; margin-top: 20px;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💥 <strong>Problem:</strong> C++ <strong>nie sprawdza</strong> granic tablicy!
+							</p>
+						</div>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+// ✅ Poprawnie - zawsze sprawdzaj zakres:
+for (int* p = A; p < A + 5; p++) {  // p < A+5 chroni przed wyjściem
+    cout << *p << " ";
+}
+						</code></pre>
+					</section>
+
+					<!-- Slajd 5.6: Pułapka 3 - Wskaźnik do zmiennej lokalnej -->
+					<section>
+						<h2 style="color: #fa4242;">⚠️ Pułapka #3: Zwracanie wskaźnika do zmiennej lokalnej</h2>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int* get_number() {
+    int x = 42;    // Zmienna LOKALNA
+    return &x;     // ❌ BŁĄD! x zniknie po zakończeniu funkcji
+}
+
+int main() {
+    int* p = get_number();
+    cout << *p;    // ❌ Wskaźnik do nieistniejącej zmiennej!
+}
+						</code></pre>
+						<div class="fragment" style="background: rgba(250, 66, 66, 0.1); padding: 20px; border-left: 4px solid #fa4242; margin-top: 20px;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💥 <strong>Dangling pointer:</strong> Wskaźnik do zniszczonej pamięci!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 5.7: Wskaźniki i napisy C-style -->
+					<section>
+						<h2 style="color: #42affa;">Wskaźniki i napisy C-style</h2>
+						<p style="font-size: 0.9em;">Napisy w C++ (C-style) to tablice znaków zakończone <code>'\0'</code>:</p>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+char str[] = "Hello";   // Tablica: {'H','e','l','l','o','\0'}
+char* p = str;          // Wskaźnik na pierwszy znak
+
+while (*p != '\0') {    // Iteruj do końca napisu
+    cout << *p;
+    p++;
+}
+						</code></pre>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa; margin-top: 20px;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 Znak <code>'\0'</code> (null terminator) oznacza koniec napisu!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 5.8: Przejście do ćwiczenia -->
+					<section data-background-gradient="linear-gradient(to bottom, #1a1a2e, #16213e)">
+						<h2 style="color: #42affa;">Czas na praktykę! 🚀</h2>
+						<h3 style="color: #888;">Ćwiczenie 4: Własne strlen (ex04)</h3>
+						<div style="background: rgba(66, 175, 250, 0.1); padding: 25px; border-radius: 10px; border: 2px solid #42affa;">
+							<p style="font-size: 0.9em;"><strong>Twoje zadanie:</strong></p>
+							<ul style="font-size: 0.85em; text-align: left; line-height: 1.8;">
+								<li>✅ Napisz funkcję <code>size_t my_strlen(const char* s)</code></li>
+								<li>✅ Funkcja ma zwrócić długość napisu (bez <code>'\0'</code>)</li>
+								<li>✅ Iteruj wskaźnikiem do znaku <code>'\0'</code></li>
+								<li>✅ Policz liczbę znaków</li>
+								<li>✅ Przetestuj na różnych napisach</li>
+							</ul>
+						</div>
+						<p class="fragment" style="font-size: 0.85em;">
+							<span style="color: #42affa;">👨‍💻</span> <strong>Przejdź do GitHub Codespaces i otwórz plik ex04.cpp</strong>
+						</p>
+						<p class="fragment" style="font-size: 0.75em; color: #666;">
+							Wskazówka: Użyj pętli <code>while (*s != '\0')</code> i inkrementuj licznik oraz wskaźnik
+						</p>
+					</section>
+				</section>
+
+				<!-- ========== SEKCJA 6: DYNAMICZNA ALOKACJA PAMIĘCI ========== -->
+				<section>
+					<!-- Slajd 6.0: Wprowadzenie -->
+					<section>
+						<h2 style="color: #42affa;">Dynamiczna alokacja pamięci</h2>
+						<h3 style="color: #888;">Operatory <code>new</code> i <code>delete</code></h3>
+						<p class="fragment" style="font-size: 0.9em;">
+							Tworzenie zmiennych i tablic o <strong style="color: #42affa;">rozmiarze znanym w trakcie działania programu</strong>
+						</p>
+					</section>
+
+					<!-- Slajd 6.1: Stack vs Heap -->
+					<section>
+						<h2 style="color: #42affa;">Pamięć Stack vs Heap</h2>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+							<div class="fragment">
+								<h3 style="color: #faaf42; font-size: 1.2em;">Stack (Stos)</h3>
+								<ul style="font-size: 0.85em; line-height: 1.8;">
+									<li>Zmienne lokalne</li>
+									<li>Rozmiar znany <strong>w czasie kompilacji</strong></li>
+									<li>Automatyczne zarządzanie</li>
+									<li>Ograniczona wielkość (~1-8 MB)</li>
+									<li>Szybki dostęp</li>
+								</ul>
+								<pre style="margin-top: 15px;"><code data-trim class="language-cpp">
+int x = 10;
+int arr[100];
+								</code></pre>
+							</div>
+							<div class="fragment">
+								<h3 style="color: #42affa; font-size: 1.2em;">Heap (Sterta)</h3>
+								<ul style="font-size: 0.85em; line-height: 1.8;">
+									<li>Pamięć dynamiczna</li>
+									<li>Rozmiar znany <strong>w czasie działania</strong></li>
+									<li>Ręczne zarządzanie</li>
+									<li>Duża przestrzeń (GB)</li>
+									<li>Wolniejszy dostęp</li>
+								</ul>
+								<pre style="margin-top: 15px;"><code data-trim class="language-cpp">
+int* p = new int(10);
+int* arr = new int[n];
+								</code></pre>
+							</div>
+						</div>
+					</section>
+
+					<!-- Slajd 6.2: Operator new -->
+					<section>
+						<h2 style="color: #42affa;">Operator <code>new</code> - alokacja pamięci</h2>
+						<p style="font-size: 0.9em;">Operator <code>new</code> alokuje pamięć na <strong>stercie</strong> i zwraca wskaźnik:</p>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+// Pojedyncza zmienna
+int* p = new int;        // Niezainicjalizowana
+int* q = new int(42);    // Zainicjalizowana wartością 42
+
+cout << *q;              // Wypisuje: 42
+						</code></pre>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+// Tablica dynamiczna
+int n = 100;
+int* arr = new int[n];   // Tablica 100 elementów
+
+arr[0] = 10;
+arr[99] = 20;
+						</code></pre>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 Rozmiar tablicy może być zmienną - poznany w czasie działania!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 6.2b: Różnica między stack a heap -->
+					<section>
+						<h2 style="color: #42affa;">Czym się różnią?</h2>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; font-size: 0.85em;">
+							<div class="fragment">
+								<pre><code data-trim class="language-cpp">
+int q = 42;
+								</code></pre>
+								<ul style="line-height: 1.8;">
+									<li>Zmienna na <strong style="color: #faaf42;">stosie</strong></li>
+									<li>Automatycznie zwalniana</li>
+									<li>Żyje tylko w funkcji</li>
+									<li>Bezpośredni dostęp: <code>q</code></li>
+								</ul>
+							</div>
+							<div class="fragment">
+								<pre><code data-trim class="language-cpp">
+int* q = new int(42);
+								</code></pre>
+								<ul style="line-height: 1.8;">
+									<li>Zmienna na <strong style="color: #42affa;">stercie</strong></li>
+									<li>Musisz zwolnić: <code>delete q;</code></li>
+									<li>Żyje aż do <code>delete</code></li>
+									<li>Dostęp przez wskaźnik: <code>*q</code></li>
+								</ul>
+							</div>
+						</div>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa; margin-top: 30px;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 <code>int q = 42;</code> to zmienna, <code>int* q = new int(42);</code> to wskaźnik do dynamicznie zaalokowanej zmiennej!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 6.3: Operator delete -->
+					<section>
+						<h2 style="color: #42affa;">Operator <code>delete</code> - zwalnianie pamięci</h2>
+						<p style="font-size: 0.9em;">Każdy <code>new</code> wymaga odpowiadającego <code>delete</code>:</p>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+// Pojedyncza zmienna
+int* p = new int(42);
+delete p;                // Zwalnia pamięć
+						</code></pre>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+// Tablica
+int* arr = new int[100];
+delete[] arr;            // ⚠️ Dla tablic: delete[]
+						</code></pre>
+						<div class="fragment" style="background: rgba(250, 66, 66, 0.1); padding: 20px; border-left: 4px solid #fa4242; margin-top: 20px;">
+							<p style="font-size: 0.85em; margin: 0;">
+								⚠️ <strong>UWAGA:</strong> Dla tablic używaj <code>delete[]</code>, nie <code>delete</code>!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 6.4: Kompletny przykład -->
+					<section>
+						<h2 style="color: #42affa;">Kompletny przykład</h2>
+						<pre><code data-trim data-noescape class="language-cpp">
+int main() {
+    int n;
+    cout << "Podaj rozmiar tablicy: ";
+    cin >> n;
+    
+    // Alokacja
+    int* arr = new int[n];
+    
+    // Użycie
+    for (int i = 0; i < n; i++) {
+        arr[i] = i * 10;
+    }
+    
+    // Wypisanie
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    
+    // Zwolnienie
+    delete[] arr;
+    
+    return 0;
+}
+						</code></pre>
+					</section>
+
+					<!-- Slajd 6.5: Memory leak -->
+					<section>
+						<h2 style="color: #fa4242;">⚠️ Memory Leak - wyciek pamięci</h2>
+						<p style="font-size: 0.9em;">Brak <code>delete</code> powoduje <strong>wyciek pamięci</strong>:</p>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+void bad_function() {
+    int* arr = new int[1000];
+    // ... używamy arr ...
+    // ❌ Brak delete[] arr - WYCIEK!
+}
+
+int main() {
+    for (int i = 0; i < 10000; i++) {
+        bad_function();  // 💥 Każde wywołanie traci pamięć!
+    }
+}
+						</code></pre>
+						<div class="fragment" style="background: rgba(250, 66, 66, 0.1); padding: 20px; border-left: 4px solid #fa4242; margin-top: 20px;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💥 Program zużywa coraz więcej pamięci, aż system zabije proces!
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 6.6: Dobre praktyki -->
+					<section>
+						<h2 style="color: #42affa;">Dobre praktyki</h2>
+						<ul style="font-size: 0.9em; line-height: 2;">
+							<li class="fragment">
+								✅ <strong>Zawsze paruj</strong> <code>new</code> z <code>delete</code>
+							</li>
+							<li class="fragment">
+								✅ <strong>delete[] dla tablic</strong>, <code>delete</code> dla pojedynczych zmiennych
+							</li>
+							<li class="fragment">
+								✅ Po <code>delete</code> ustaw wskaźnik na <code>nullptr</code>
+							</li>
+							<li class="fragment">
+								✅ Nie używaj wskaźnika po <code>delete</code>
+							</li>
+							<li class="fragment">
+								💡 W nowoczesnym C++ używaj <strong>smart pointerów</strong> (<code>unique_ptr</code>, <code>shared_ptr</code>)
+							</li>
+						</ul>
+						<pre class="fragment"><code data-trim data-noescape class="language-cpp">
+int* p = new int(42);
+delete p;
+p = nullptr;     // ✅ Bezpieczne
+						</code></pre>
+					</section>
+
+					<!-- Slajd 6.7: Kiedy używać dynamicznej alokacji? -->
+					<section>
+						<h2 style="color: #42affa;">Kiedy używać dynamicznej alokacji?</h2>
+						<ul style="font-size: 0.9em; line-height: 2;">
+							<li class="fragment">
+								✅ Rozmiar danych <strong>nieznany w czasie kompilacji</strong>
+							</li>
+							<li class="fragment">
+								✅ Potrzebujesz <strong>dużo pamięci</strong> (więcej niż stack)
+							</li>
+							<li class="fragment">
+								✅ Dane mają <strong>żyć dłużej</strong> niż funkcja
+							</li>
+							<li class="fragment">
+								✅ Tworzenie <strong>złożonych struktur danych</strong> (listy, drzewa)
+							</li>
+						</ul>
+						<div class="fragment" style="background: rgba(66, 175, 250, 0.1); padding: 20px; border-left: 4px solid #42affa; margin-top: 30px;">
+							<p style="font-size: 0.85em; margin: 0;">
+								💡 W innych przypadkach preferuj zmienne automatyczne (stack)
+							</p>
+						</div>
+					</section>
+
+					<!-- Slajd 6.8: Przejście do ćwiczenia -->
+					<section data-background-gradient="linear-gradient(to bottom, #1a1a2e, #16213e)">
+						<h2 style="color: #42affa;">Czas na praktykę! 🚀</h2>
+						<h3 style="color: #888;">Ćwiczenie 5: Dynamiczna tablica (ex05)</h3>
+						<div style="background: rgba(66, 175, 250, 0.1); padding: 25px; border-radius: 10px; border: 2px solid #42affa;">
+							<p style="font-size: 0.9em;"><strong>Twoje zadanie:</strong></p>
+							<ul style="font-size: 0.85em; text-align: left; line-height: 1.8;">
+								<li>✅ Zapytaj użytkownika o rozmiar tablicy</li>
+								<li>✅ Stwórz dynamiczną tablicę <code>int* arr = new int[n]</code></li>
+								<li>✅ Wypełnij ją liczbami (np. kolejne liczby parzyste)</li>
+								<li>✅ Wypisz wszystkie elementy</li>
+								<li>✅ <strong>Zwolnij pamięć</strong> używając <code>delete[]</code></li>
+							</ul>
+						</div>
+						<p class="fragment" style="font-size: 0.85em;">
+							<span style="color: #42affa;">👨‍💻</span> <strong>Przejdź do GitHub Codespaces i otwórz plik ex05.cpp</strong>
+						</p>
+						<p class="fragment" style="font-size: 0.75em; color: #666;">
+							Wskazówka: Pamiętaj o <code>delete[] arr;</code> przed końcem programu!
+						</p>
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				width: 1280,
+				height: 960,
+				margin: 0.04,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
